@@ -1,0 +1,49 @@
+VAR_GLOBAL
+DECLARATION
+int A;
+float B;
+char C;
+INSTRUCTION
+A = 10;
+B = 3.14;
+FOR (I = 0: 1: 10)
+{
+    IF (I == 5)
+    {
+        A = 10;
+        
+    }
+    ELSE
+    {
+        A = 1;
+        
+    }
+    FOR (J = 0: 2: 20)
+    {
+        B = 0.5;
+        IF (J == 2)
+        {
+            WRITE("This is the value of B when J == 2: ");
+           
+        }
+        ELSE
+        {
+            WRITE("This is the value of B when J != 2: ");
+           
+        }
+    }
+
+    WRITE("The value of I after the inner FOR loop: ");
+   
+}
+
+
+IF (A > 20)
+{
+    WRITE("A is greater than 20.");
+}
+ELSE 
+{
+    WRITE("A is equal to 10.");
+}
+END

@@ -73,11 +73,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "TABLES_SYMBOLE.h"
 void yyerror(const char *s);
+char save_type[100];
 
 
 /* Line 189 of yacc.c  */
-#line 81 "SYNTAXIC.tab.c"
+#line 83 "SYNTAXIC.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -158,7 +160,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 7 "SYNTAXIC.y"
+#line 9 "SYNTAXIC.y"
 
  int int_val;
  char* str_val;
@@ -167,7 +169,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 171 "SYNTAXIC.tab.c"
+#line 173 "SYNTAXIC.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -179,7 +181,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 183 "SYNTAXIC.tab.c"
+#line 185 "SYNTAXIC.tab.c"
 
 #ifdef short
 # undef short
@@ -496,13 +498,13 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    32,    32,    33,    34,    35,    36,    37,    38,    39,
-      40,    43,    45,    46,    49,    49,    49,    49,    49,    49,
-      49,    49,    49,    51,    51,    51,    52,    52,    53,    53,
-      54,    55,    56,    57,    58,    60,    61,    62,    63,    64,
-      65,    67,    68,    69,    70,    72,    73,    75,    76,    77,
-      78,    79,    80,    81,    82,    82,    85,    85,    85,    87,
-      88,    89,    91,    92,    93,   101,   110,   111,   112
+       0,    34,    34,    35,    36,    37,    38,    39,    40,    41,
+      42,    45,    47,    48,    51,    51,    51,    51,    51,    51,
+      51,    51,    51,    53,    53,    53,    54,    54,    55,    55,
+      56,    57,    58,    59,    60,    62,    63,    64,    65,    66,
+      67,    69,    70,    71,    72,    74,    75,    77,    83,    84,
+      85,    86,    87,    88,    90,   100,   112,   112,   112,   114,
+     115,   116,   118,   119,   120,   128,   137,   138,   139
 };
 #endif
 
@@ -1498,147 +1500,205 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 32 "SYNTAXIC.y"
+#line 34 "SYNTAXIC.y"
     { printf("Result = %d\n", (yyvsp[(2) - (3)].float_val)); ;}
     break;
 
   case 6:
 
 /* Line 1455 of yacc.c  */
-#line 36 "SYNTAXIC.y"
+#line 38 "SYNTAXIC.y"
     { printf("Result = %d\n", (yyvsp[(1) - (2)].float_val)); ;}
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 37 "SYNTAXIC.y"
+#line 39 "SYNTAXIC.y"
     {printf("partie pour les variables globales .\n");;}
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 38 "SYNTAXIC.y"
+#line 40 "SYNTAXIC.y"
     {printf("partie pour LA DECLARATION .\n");;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 39 "SYNTAXIC.y"
+#line 41 "SYNTAXIC.y"
     {printf("partie pour LES INSTRUCTION .\n");;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 43 "SYNTAXIC.y"
+#line 45 "SYNTAXIC.y"
     { printf("Valid FOR loop.\n"); ;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 45 "SYNTAXIC.y"
+#line 47 "SYNTAXIC.y"
     { printf("Valid IF statement\n"); ;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 46 "SYNTAXIC.y"
+#line 48 "SYNTAXIC.y"
     { printf("Valid IF statement\n"); ;}
     break;
 
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 75 "SYNTAXIC.y"
-    { printf("Assignment: %s = %g\n", (yyvsp[(1) - (4)].str_val), (yyvsp[(3) - (4)].float_val)); ;}
+#line 77 "SYNTAXIC.y"
+    { 
+    printf("Assignment: %s = %g\n", (yyvsp[(1) - (4)].str_val), (yyvsp[(3) - (4)].float_val)); 
+    if (check_declaration((yyvsp[(1) - (4)].str_val))==0){
+      printf("semantic error idf %s not declared \n",(yyvsp[(1) - (4)].str_val));
+    }
+    ;}
     break;
 
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 76 "SYNTAXIC.y"
+#line 83 "SYNTAXIC.y"
     { printf("Read variable: %s\n", (yyvsp[(3) - (5)].str_val)); ;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 77 "SYNTAXIC.y"
+#line 84 "SYNTAXIC.y"
     { printf("Write: %s\n", (yyvsp[(3) - (5)].str_val)); ;}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 78 "SYNTAXIC.y"
+#line 85 "SYNTAXIC.y"
     { printf("Write: %s\n", (yyvsp[(3) - (9)].str_val)); printf("Write: %s\n", (yyvsp[(7) - (9)].str_val)); ;}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 79 "SYNTAXIC.y"
+#line 86 "SYNTAXIC.y"
     { printf("Array of size: %d\n", (yyvsp[(4) - (6)].int_val)); ;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 80 "SYNTAXIC.y"
+#line 87 "SYNTAXIC.y"
     { printf("Declaration of variable of type: %s\n", (yyvsp[(1) - (3)].str_val)); ;}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 81 "SYNTAXIC.y"
+#line 88 "SYNTAXIC.y"
     { printf("Declaration of CONST of type: %s\n", (yyvsp[(2) - (4)].str_val)); ;}
+    break;
+
+  case 54:
+
+/* Line 1455 of yacc.c  */
+#line 90 "SYNTAXIC.y"
+    {
+    if(check_declaration((yyvsp[(1) - (1)].str_val))==0)
+      {
+         insere_types ((yyvsp[(1) - (1)].str_val),save_type);
+      }
+    else {
+        printf("semantic Error: variable %s double declared\n", (yyvsp[(1) - (1)].str_val));
+        YYABORT;
+    }
+    ;}
+    break;
+
+  case 55:
+
+/* Line 1455 of yacc.c  */
+#line 100 "SYNTAXIC.y"
+    {
+    if(check_declaration((yyvsp[(1) - (3)].str_val))==0)
+      {
+         insere_types ((yyvsp[(1) - (3)].str_val),save_type);
+      }
+    else {
+        printf("semantic Error: variable %s double declared\n", (yyvsp[(1) - (3)].str_val));
+        YYABORT;
+    }
+    ;}
+    break;
+
+  case 56:
+
+/* Line 1455 of yacc.c  */
+#line 112 "SYNTAXIC.y"
+    {strcpy(save_type,(yyvsp[(1) - (1)].str_val));;}
+    break;
+
+  case 57:
+
+/* Line 1455 of yacc.c  */
+#line 112 "SYNTAXIC.y"
+    {strcpy(save_type,(yyvsp[(1) - (1)].str_val));;}
+    break;
+
+  case 58:
+
+/* Line 1455 of yacc.c  */
+#line 112 "SYNTAXIC.y"
+    {strcpy(save_type,(yyvsp[(1) - (1)].str_val));;}
     break;
 
   case 59:
 
 /* Line 1455 of yacc.c  */
-#line 87 "SYNTAXIC.y"
+#line 114 "SYNTAXIC.y"
     { (yyval.float_val) = (yyvsp[(1) - (1)].float_val); ;}
     break;
 
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 88 "SYNTAXIC.y"
+#line 115 "SYNTAXIC.y"
     { (yyval.float_val) = (yyvsp[(1) - (3)].float_val) + (yyvsp[(3) - (3)].float_val); ;}
     break;
 
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 89 "SYNTAXIC.y"
+#line 116 "SYNTAXIC.y"
     { (yyval.float_val) = (yyvsp[(1) - (3)].float_val) - (yyvsp[(3) - (3)].float_val); ;}
     break;
 
   case 62:
 
 /* Line 1455 of yacc.c  */
-#line 91 "SYNTAXIC.y"
+#line 118 "SYNTAXIC.y"
     { (yyval.float_val) = (yyvsp[(1) - (1)].float_val); ;}
     break;
 
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 92 "SYNTAXIC.y"
+#line 119 "SYNTAXIC.y"
     { (yyval.float_val) = (yyvsp[(1) - (3)].float_val) * (yyvsp[(3) - (3)].float_val); ;}
     break;
 
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 93 "SYNTAXIC.y"
+#line 120 "SYNTAXIC.y"
     {
            if ((yyvsp[(3) - (3)].float_val) == 0) { 
                yyerror("DIVISION by zero");
@@ -1652,7 +1712,7 @@ yyreduce:
   case 65:
 
 /* Line 1455 of yacc.c  */
-#line 101 "SYNTAXIC.y"
+#line 128 "SYNTAXIC.y"
     {
            if ((yyvsp[(3) - (3)].float_val) == 0) { 
                yyerror("MODULO by zero");
@@ -1666,28 +1726,28 @@ yyreduce:
   case 66:
 
 /* Line 1455 of yacc.c  */
-#line 110 "SYNTAXIC.y"
+#line 137 "SYNTAXIC.y"
     { (yyval.float_val) = (float) (yyvsp[(1) - (1)].int_val); ;}
     break;
 
   case 67:
 
 /* Line 1455 of yacc.c  */
-#line 111 "SYNTAXIC.y"
+#line 138 "SYNTAXIC.y"
     {(yyval.float_val)=(yyvsp[(1) - (1)].float_val);;}
     break;
 
   case 68:
 
 /* Line 1455 of yacc.c  */
-#line 112 "SYNTAXIC.y"
+#line 139 "SYNTAXIC.y"
     { (yyval.float_val) = (yyvsp[(2) - (2)].float_val) >= 0 ? (yyvsp[(2) - (2)].float_val) : -(yyvsp[(2) - (2)].float_val); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1691 "SYNTAXIC.tab.c"
+#line 1751 "SYNTAXIC.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1899,7 +1959,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 114 "SYNTAXIC.y"
+#line 141 "SYNTAXIC.y"
 
 void yyerror(const char *s) {
     fprintf(stderr, "Error: %s\n", s);

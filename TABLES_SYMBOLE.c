@@ -23,8 +23,8 @@ int recherche(char entity[],int t){
                 return i;
              }
              i++;
-        }
-          return -1;
+        }   return -1;
+       
         break;
     case 1 :
     while(i<count_sep){
@@ -120,9 +120,23 @@ void print(){
 
 }
 
+int check_declaration(char entity[]){
+    int i=recherche(entity,0);
+    if(i!=-1 && strcmp(tab_idf_cst[i].type,"")==0){
+        return 0;
+    }
+   return -1;
+}
 
+int insere_types (char entity[],char type []){
+       
+         if(recherche(entity,0)!=-1){
+            int x=recherche(entity,0);
+            strcpy(tab_idf_cst[x].type,type);
+         }
+   
 
-
+}
 
 
 

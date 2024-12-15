@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "TABLES_SYMBOLE.h"
 void yyerror(const char *s);
+char save_type[100];
 %}
 %union {
  int int_val;
@@ -72,17 +74,42 @@ instruction : statement instruction
 instruction2 : statement instruction2
              | /* Empty */;
 
-statement : IDF EQUAL EXP SC { printf("Assignment: %s = %g\n", $1, $3); }
+statement : IDF EQUAL EXP SC { 
+    printf("Assignment: %s = %g\n", $1, $3); 
+    if (check_declaration($1)==0){
+      printf("semantic error idf %s not declared \n",$1);
+    }
+    }
           | READ PAR_G IDF PAR_D SC { printf("Read variable: %s\n", $3); }
           | WRITE PAR_G STRING_LITTERAL PAR_D SC { printf("Write: %s\n", $3); }
           | WRITE PAR_G STRING_LITTERAL VIRGULE IDF VIRGULE STRING_LITTERAL PAR_D SC { printf("Write: %s\n", $3); printf("Write: %s\n", $7); }
           | types IDF BRA_G INTEGR_CONST BRA_D SC { printf("Array of size: %d\n", $4); }
           | types thing3 SC { printf("Declaration of variable of type: %s\n", $1); };
           | CONST types IDF SC { printf("Declaration of CONST of type: %s\n", $2); };
- thing3 : IDF | IDF VIRGULE thing3 ; 
+
+ thing3 : IDF  {
+    if(check_declaration($1)==0)
+      {
+         insere_types ($1,save_type);
+      }
+    else {
+        printf("semantic Error: variable %s double declared\n", $1);
+        YYABORT;
+    }
+    }
+ | IDF VIRGULE thing3 {
+    if(check_declaration($1)==0)
+      {
+         insere_types ($1,save_type);
+      }
+    else {
+        printf("semantic Error: variable %s double declared\n", $1);
+        YYABORT;
+    }
+    }; 
  
 
-types : INT_TYPE | FLOAT_TYPE | CHAR_TYPE;
+types : INT_TYPE {strcpy(save_type,$1);} | FLOAT_TYPE {strcpy(save_type,$1);} | CHAR_TYPE {strcpy(save_type,$1);};
 
 EXP : FACTOR { $$ = $1; }
     | EXP PLUS FACTOR { $$ = $1 + $3; }

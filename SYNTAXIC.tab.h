@@ -93,7 +93,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 7 "SYNTAXIC.y"
+#line 9 "SYNTAXIC.y"
 
  int int_val;
  char* str_val;
