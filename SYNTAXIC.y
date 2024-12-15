@@ -9,12 +9,12 @@ void yyerror(const char *s);
  char* str_val;
  float float_val;
 }
-%token VAR DECLARATION INSTRUCTION FOR IF ELSE CONST READ WRITE EOL
+%token VAR DECLARATION INSTRUCTION FOR IF ELSE CONST READ WRITE  EOL
 
 %token <str_val>IDF STRING_LITTERAL INT_TYPE FLOAT_TYPE CHAR_TYPE
 
 %token <float_val>  FLOAT_CONST
-
+ 
 %token <int_val> INTEGR_CONST 
 
 %token INLINE_COMMENT BLOCK_COMMENT  
@@ -76,7 +76,7 @@ statement : IDF EQUAL EXP SC { printf("Assignment: %s = %g\n", $1, $3); }
           | READ PAR_G IDF PAR_D SC { printf("Read variable: %s\n", $3); }
           | WRITE PAR_G STRING_LITTERAL PAR_D SC { printf("Write: %s\n", $3); }
           | WRITE PAR_G STRING_LITTERAL VIRGULE IDF VIRGULE STRING_LITTERAL PAR_D SC { printf("Write: %s\n", $3); printf("Write: %s\n", $7); }
-          | IDF BRA_G INTEGR_CONST BRA_D SC { printf("Array of size: %d\n", $3); }
+          | types IDF BRA_G INTEGR_CONST BRA_D SC { printf("Array of size: %d\n", $4); }
           | types thing3 SC { printf("Declaration of variable of type: %s\n", $1); };
           | CONST types IDF SC { printf("Declaration of CONST of type: %s\n", $2); };
  thing3 : IDF | IDF VIRGULE thing3 ; 
