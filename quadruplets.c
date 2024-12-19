@@ -3,6 +3,7 @@
 #include <string.h>
 #include "quadruplets.h"
 qdr quad[1000];
+
 extern int qc;
 
 void quadr(char op[],char arg1[],char arg2[],char result[])
@@ -31,6 +32,6 @@ for(i=0;i<qc;i++)
 {
 printf("\n %d - ( %s , %s , %s , %s )",i,quad[i].op,quad[i].arg1,quad[i].arg2,
 quad[i].result);
-printf("\n——————————————————–\n");
+printf("\n-------------------------------\n");
 }
 }

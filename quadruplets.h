@@ -1,7 +1,7 @@
 #ifndef QUADRUPLETS_H
 #define QUADRUPLETS_H
 
-// Maximum size of the quadruplets array
+// Maximum size of the quadruplets arrays
 #define MAX_QUADS 1000
 
 // Structure to represent a quadruplet
@@ -14,7 +14,7 @@ typedef struct {
 
 // Global variables
 extern qdr quad[MAX_QUADS]; // Array to hold quadruplets
-extern int qc;              // Quadruplet counter
+           
 
 // Function declarations
 void quadr(char op[], char arg1[], char arg2[], char result[]);

@@ -5,6 +5,16 @@
 #include "TABLES_SYMBOLE.h"
 void yyerror(const char *s);
 char save_type[100];
+
+int temp_count = 0;
+int qc = 0;
+char temp[20];
+char str1[20];
+char str2[20];
+
+void new_temp(char *temp) {
+    sprintf(temp, "t%d", temp_count++);
+}
 %}
 %union {
  int int_val;
@@ -13,7 +23,7 @@ char save_type[100];
 }
 %token VAR DECLARATION INSTRUCTION FOR IF ELSE CONST READ WRITE  EOL
 
-%token <str_val>IDF STRING_LITTERAL INT_TYPE FLOAT_TYPE CHAR_TYPE
+%token <str_val> IDF STRING_LITTERAL INT_TYPE FLOAT_TYPE CHAR_TYPE
 
 %token <float_val>  FLOAT_CONST
  
@@ -28,7 +38,9 @@ char save_type[100];
 %type <float_val> EXP FACTOR TERM statement
 
 %type <str_val> types
-
+%type <str_val> condition 
+%type <float_val> NUMBER
+%type <str_val> thing
 %start S
 %%
 S : S EXP SC                 { printf("Result = %d\n", $2); }
@@ -48,9 +60,64 @@ IfStatement : IF PAR_G condition PAR_D ACC_G instruction ACC_D { printf("Valid I
             | IF PAR_G condition PAR_D ACC_G instruction ACC_D ELSE ACC_G instruction ACC_D { printf("Valid IF statement\n"); };
 
 
-condition : IDF SUP thing | IDF INF thing | IDF SUP_EQ thing | IDF INF_EQ thing | IDF EQ_COMP thing | IDF NEQ_COMP thing | thing4 AND thing4 | thing4 OR thing4 | thing4 ;
+condition : IDF SUP NUMBER{
+   new_temp(temp);
+   sprintf(str1, "%2.f", $3);
+   quadr(">", $1, str1, temp);
+   $$ = temp;
+}
+|IDF SUP IDF{
+   new_temp(temp);
+   quadr(">", $1, $3, temp);
+   $$ = temp;
+}
 
-thing : IDF | INTEGR_CONST | FLOAT_CONST;
+| IDF INF IDF  {
+  new_temp(temp);
+   quadr("<", $1, $3, temp);
+   $$ = temp;
+}
+| IDF INF NUMBER {
+   new_temp(temp);
+   sprintf(str1, "%2.f", $3);
+   quadr("<", $1, str1, temp);
+   $$ = temp;
+}
+
+| IDF SUP_EQ IDF {
+   new_temp(temp);
+   quadr(">=", $1, $3, temp);
+   $$ = temp;
+}
+| IDF SUP_EQ NUMBER {
+    new_temp(temp);
+   sprintf(str1, "%2.f", $3);
+   quadr(">=", $1, str1, temp);
+   $$ = temp;
+}
+| IDF INF_EQ thing{
+  new_temp(temp);
+   quadr("<=", $1, $3, temp);
+   $$ = temp;
+}
+|IDF INF_EQ NUMBER {
+   new_temp(temp);
+   sprintf(str1, "%2.f", $3);
+   quadr("<=", $1, str1, temp);
+   $$ = temp;
+}
+
+|IDF EQ_COMP IDF 
+|IDF EQ_COMP NUMBER 
+|IDF NEQ_COMP IDF 
+|IDF NEQ_COMP 
+| condition AND condition 
+| condition OR condition 
+|thing4 ;
+
+thing : IDF ;
+NUMBER: INTEGR_CONST { $$ = $1; } | FLOAT_CONST { $$ = $1; } ;
+
 thing4 : IDF | NEG IDF ;
 thing2 : IDF | INTEGR_CONST 
        | IDF PLUS INTEGR_CONST 
@@ -112,17 +179,39 @@ statement : IDF EQUAL EXP SC {
 types : INT_TYPE {strcpy(save_type,$1);} | FLOAT_TYPE {strcpy(save_type,$1);} | CHAR_TYPE {strcpy(save_type,$1);};
 
 EXP : FACTOR { $$ = $1; }
-    | EXP PLUS FACTOR { $$ = $1 + $3; }
-    | EXP SUB FACTOR { $$ = $1 - $3; };
+    | EXP PLUS FACTOR { $$ = $1 + $3;
+           new_temp(temp);
+           sprintf(str1, "%.2f", $1);
+           sprintf(str2, "%.2f", $3);
+           quadr("+", str1, str2, temp);
+           $$ = atof(strdup(temp)); }
+    | EXP SUB FACTOR { $$ = $1 - $3;
+           new_temp(temp);
+           sprintf(str1, "%.2f", $1);
+           sprintf(str2, "%.2f", $3);
+           quadr("-", str1, str2, temp);
+           $$ = atof(strdup(temp)); 
+     };
 
 FACTOR : TERM { $$ = $1; }
-       | FACTOR MUL TERM { $$ = $1 * $3; }
+       | FACTOR MUL TERM { $$ = $1 * $3;
+           new_temp(temp);
+           sprintf(str1, "%.2f", $1);
+           sprintf(str2, "%.2f", $3);
+           quadr("*", str1, str2, temp);
+           $$ = atof(strdup(temp)); 
+           } 
        | FACTOR DIVIDE TERM {
            if ($3 == 0) { 
                yyerror("DIVISION by zero");
                YYABORT;
            } else {
                $$ = $1 / $3;
+           new_temp(temp);
+           sprintf(str1, "%.2f", $1);
+           sprintf(str2, "%.2f", $3);
+           quadr("/", str1, str2, temp);
+           $$ = atof(strdup(temp)); 
            }
          }
        | FACTOR MODULO TERM {
@@ -144,5 +233,6 @@ void yyerror(const char *s) {
 }
 int main() {
     yyparse();
+    print_quad();
     return 0;
 }
