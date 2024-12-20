@@ -4,6 +4,7 @@ int A;
 int D;
 float B;
 char C;
+int A;
 INSTRUCTION
 
 A = 10;

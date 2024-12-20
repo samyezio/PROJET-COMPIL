@@ -142,15 +142,3 @@ int insere_types (char entity[],char type []){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-

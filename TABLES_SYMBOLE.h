@@ -32,5 +32,7 @@ int insere(char entity[], char code[], char type[], float value, int t);
 void print();
 int check_declaration(char entity[]);
 int insere_types(char entity[],char type []);
-
 #endif // SYMBOL_TABLE_H
+
+
+
